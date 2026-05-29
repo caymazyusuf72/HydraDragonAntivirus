@@ -1,109 +1,126 @@
-/* style.css - HydraDragon Launcher Controller Cyber-Noir Design System (Firewall Aligned) */
+/* =============================================================================
+   style.css — HydraDragon Controller Design System
+   Performance-first: no @import, no heavy gradients, no transition:all
+   ============================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
+/* =============================================================================
+   Design Tokens
+   ============================================================================= */
 :root {
-    /* ── Core Palette (Dark - Default) ─────────────────────── */
-    --bg-void: #030408;
-    --bg-app: #08090f;
-    --bg-surface: rgba(14, 16, 26, 0.75);
-    
-    --t-primary: #f8fafc;
-    --t-secondary: #cbd5e1;
-    --t-muted: #94a3b8;
-    --t-dim: #475569;
-    
-    --accent-red: #ff3e3e;
-    --accent-blue: #3b82f6;
+    /* Backgrounds */
+    --bg-base:    #07080e;
+    --bg-surface: #0d0f1a;
+    --bg-raised:  #121520;
+    --bg-overlay: rgba(13, 15, 26, 0.92);
+
+    /* Text */
+    --t-primary:   #f1f5f9;
+    --t-secondary: #94a3b8;
+    --t-muted:     #475569;
+
+    /* Accents */
+    --accent-red:   #ff3e3e;
+    --accent-blue:  #3b82f6;
     --accent-green: #10b981;
     --accent-amber: #f59e0b;
-    
-    --glow-red: rgba(255, 62, 62, 0.3);
-    --glow-blue: rgba(59, 130, 246, 0.2);
-    --glow-green: rgba(16, 185, 129, 0.25);
-    --glow-amber: rgba(245, 158, 11, 0.2);
-    
-    --border-main: rgba(255, 255, 255, 0.08);
-    --border-lo: rgba(255, 255, 255, 0.03);
-    
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
+
+    /* Borders */
+    --border:    rgba(255, 255, 255, 0.07);
+    --border-hi: rgba(255, 255, 255, 0.14);
+
+    /* Radius */
+    --r-sm: 4px;
+    --r-md: 8px;
+    --r-lg: 12px;
+
+    /* Transitions — specific props only, no "all" */
+    --t-fast:   0.15s ease;
+    --t-normal: 0.2s ease;
 }
 
+/* Light theme overrides */
 .light-theme {
-    /* ── Core Palette (Light) ─────────────────────────────── */
-    --bg-void: #f1f5f9;
-    --bg-app: #f8fafc;
-    --bg-surface: rgba(255, 255, 255, 0.85);
-    
-    --t-primary: #0f172a;
-    --t-secondary: #1e293b;
-    --t-muted: #475569;
-    --t-dim: #64748b;
-    
-    --accent-red: #e11d48;
-    --accent-blue: #2563eb;
+    --bg-base:    #f1f5f9;
+    --bg-surface: #ffffff;
+    --bg-raised:  #f8fafc;
+    --bg-overlay: rgba(255, 255, 255, 0.95);
+
+    --t-primary:   #0f172a;
+    --t-secondary: #475569;
+    --t-muted:     #94a3b8;
+
+    --accent-red:   #dc2626;
+    --accent-blue:  #2563eb;
     --accent-green: #059669;
     --accent-amber: #d97706;
-    
-    --glow-red: rgba(225, 29, 72, 0.2);
-    --glow-blue: rgba(37, 99, 235, 0.15);
-    --glow-green: rgba(5, 150, 105, 0.2);
-    --glow-amber: rgba(217, 119, 6, 0.15);
-    
-    --border-main: rgba(0, 0, 0, 0.12);
-    --border-lo: rgba(0, 0, 0, 0.08);
+
+    --border:    rgba(0, 0, 0, 0.08);
+    --border-hi: rgba(0, 0, 0, 0.15);
 }
 
-* {
+/* =============================================================================
+   Reset
+   ============================================================================= */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    user-select: none;
+    /* Only disable drag, not selection (selection can be useful for error messages) */
     -webkit-user-drag: none;
 }
 
-body {
-    background: var(--bg-void);
-    color: var(--t-primary);
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-    transition: background 0.3s ease;
-    
-    /* Animated Cyber Grid (Same as Firewall) */
-    background-image:
-        radial-gradient(ellipse 1100px 800px at -5% -5%, var(--glow-red) 0%, transparent 65%),
-        radial-gradient(ellipse 900px 700px at 105% 108%, var(--glow-blue) 0%, transparent 65%),
-        linear-gradient(rgba(0, 207, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 207, 255, 0.02) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-    background-position: 0 0, 0 0, 0 0, 0 0;
+/* Allow text selection only where it makes sense */
+.setting-error,
+.component-desc {
+    user-select: text;
 }
 
-/* App Layout Container */
+/* =============================================================================
+   Base
+   ============================================================================= */
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--t-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    /* Single subtle accent glow — cheap, one layer */
+    background-image: radial-gradient(ellipse 60% 40% at 0% 0%, rgba(255, 62, 62, 0.06) 0%, transparent 100%);
+}
+
+/* =============================================================================
+   App Layout
+   ============================================================================= */
 .app-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
     width: 100vw;
-    background: var(--bg-app);
-    transition: background 0.3s ease;
 }
 
-/* Header */
+/* =============================================================================
+   Header
+   ============================================================================= */
 .app-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
-    background: var(--bg-surface);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border-main);
+    padding: 14px 24px;
+    background-color: var(--bg-overlay);
+    /* backdrop-filter only here (single layer, acceptable GPU cost) */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
     z-index: 10;
 }
 
@@ -114,97 +131,110 @@ body {
 }
 
 .brand-logo {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     color: var(--accent-red);
-    filter: drop-shadow(0 0 6px var(--glow-red));
+    flex-shrink: 0;
 }
 
 .brand-title {
     font-family: 'Oxanium', sans-serif;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     color: var(--t-primary);
 }
 
 .brand-badge {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    font-weight: 600;
-    padding: 2px 6px;
-    border-radius: var(--radius-sm);
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: var(--r-sm);
     background: rgba(255, 62, 62, 0.1);
     color: var(--accent-red);
-    border: 1px solid rgba(255, 62, 62, 0.2);
-    letter-spacing: 1px;
+    border: 1px solid rgba(255, 62, 62, 0.18);
+    letter-spacing: 0.08em;
 }
 
 .header-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    align-items: center;
 }
 
+/* =============================================================================
+   Settings Strip
+   ============================================================================= */
 .settings-strip {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 56px;
-    padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.02);
-    border-bottom: 1px solid var(--border-main);
+    padding: 10px 24px;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    min-height: 48px;
 }
 
 .setting-meta {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .setting-title {
     font-family: 'Oxanium', sans-serif;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--t-primary);
 }
 
 .setting-state {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
     color: var(--t-muted);
-    border: 1px solid var(--border-main);
+    border: 1px solid var(--border);
+    background: transparent;
 }
 
 .setting-state.enabled {
     color: var(--accent-amber);
-    background: rgba(245, 158, 11, 0.1);
-    border-color: rgba(245, 158, 11, 0.2);
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.18);
 }
 
 .setting-error {
-    max-width: min(520px, 55vw);
+    max-width: min(480px, 50vw);
     color: var(--accent-red);
     font-size: 12px;
-    font-weight: 600;
-    line-height: 1.3;
+    font-weight: 500;
+    line-height: 1.4;
 }
 
+/* =============================================================================
+   Toggle Switch
+   ============================================================================= */
 .toggle-switch {
     position: relative;
     display: inline-flex;
-    width: 46px;
-    height: 26px;
+    width: 44px;
+    height: 24px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .toggle-switch input {
     position: absolute;
     opacity: 0;
+    width: 0;
+    height: 0;
     pointer-events: none;
 }
 
@@ -212,27 +242,26 @@ body {
     position: absolute;
     inset: 0;
     border-radius: 999px;
-    background: rgba(148, 163, 184, 0.18);
-    border: 1px solid var(--border-main);
-    transition: all 0.2s ease;
+    background: rgba(148, 163, 184, 0.15);
+    border: 1px solid var(--border);
+    transition: background-color var(--t-normal), border-color var(--t-normal);
 }
 
 .toggle-track::after {
     content: '';
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 3px;
+    left: 3px;
     width: 16px;
     height: 16px;
     border-radius: 50%;
     background: var(--t-secondary);
-    transition: all 0.2s ease;
+    transition: transform var(--t-normal), background-color var(--t-normal);
 }
 
 .toggle-switch input:checked + .toggle-track {
-    background: rgba(245, 158, 11, 0.18);
-    border-color: rgba(245, 158, 11, 0.35);
-    box-shadow: 0 0 10px var(--glow-amber);
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.3);
 }
 
 .toggle-switch input:checked + .toggle-track::after {
@@ -240,42 +269,64 @@ body {
     background: var(--accent-amber);
 }
 
-/* Main Dashboard Grid */
+/* =============================================================================
+   Dashboard Grid
+   ============================================================================= */
 .dashboard-grid {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 24px;
+    gap: 14px;
+    padding: 20px 24px;
     overflow-y: auto;
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-hi) transparent;
 }
 
-/* Card Styling */
+.dashboard-grid::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dashboard-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dashboard-grid::-webkit-scrollbar-thumb {
+    background: var(--border-hi);
+    border-radius: 99px;
+}
+
+/* =============================================================================
+   Component Cards
+   ============================================================================= */
 .component-card {
     background: var(--bg-surface);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border-main);
-    border-radius: var(--radius-lg);
-    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 18px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
+    /* Specific transitions only */
+    transition: border-color var(--t-normal), transform var(--t-normal), box-shadow var(--t-normal);
+    /* Hint browser about transform animation */
+    will-change: transform;
 }
 
 .component-card:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--border-hi);
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
 }
 
 .light-theme .component-card:hover {
-    border-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
 }
 
+/* Left accent bar */
 .component-card::before {
     content: '';
     position: absolute;
@@ -283,185 +334,230 @@ body {
     left: 0;
     width: 3px;
     height: 100%;
-    background-color: var(--t-dim);
-    transition: background-color 0.3s ease;
+    background: var(--t-muted);
+    border-radius: var(--r-lg) 0 0 var(--r-lg);
+    transition: background-color var(--t-normal);
 }
 
 .component-card.running::before {
-    background-color: var(--accent-green);
-    box-shadow: 0 0 10px var(--glow-green);
+    background: var(--accent-green);
 }
 
 .component-card.stopped::before {
-    background-color: var(--accent-red);
-    box-shadow: 0 0 10px var(--glow-red);
+    background: rgba(255, 62, 62, 0.5);
 }
 
-/* Component Header */
+/* =============================================================================
+   Component Header & Body
+   ============================================================================= */
 .component-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .component-name {
     font-family: 'Oxanium', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--t-primary);
 }
 
 .component-desc {
-    font-size: 13px;
+    font-size: 12px;
+    line-height: 1.55;
     color: var(--t-secondary);
-    margin-bottom: 16px;
-    height: 38px;
-    overflow: hidden;
+    margin-bottom: 14px;
+    /* Fixed height prevents layout shift */
+    min-height: 36px;
 }
 
-/* Status Indicator */
+/* =============================================================================
+   Status Pill
+   ============================================================================= */
 .status-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-family: 'IBM Plex Mono', monospace;
+    gap: 5px;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
 }
 
 .status-pill.running {
     background: rgba(16, 185, 129, 0.1);
     color: var(--accent-green);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.18);
 }
 
 .status-pill.stopped {
-    background: rgba(255, 62, 62, 0.1);
+    background: rgba(255, 62, 62, 0.08);
     color: var(--accent-red);
-    border: 1px solid rgba(255, 62, 62, 0.2);
+    border: 1px solid rgba(255, 62, 62, 0.15);
 }
 
+/* Status dot */
 .status-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background-color: currentColor;
+    flex-shrink: 0;
 }
 
+/* Pulse — opacity only (cheaper than scale) */
 .status-dot.pulse {
-    animation: pulse 1.5s infinite alternate;
+    animation: dot-pulse 2s ease-in-out infinite;
+    will-change: opacity;
 }
 
-@keyframes pulse {
-    0% { transform: scale(0.85); opacity: 0.5; }
-    100% { transform: scale(1.2); opacity: 1; }
+@keyframes dot-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
 }
 
-/* Actions inside Card */
+/* =============================================================================
+   Card Actions
+   ============================================================================= */
 .card-actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-lo);
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
 }
 
-/* Buttons */
-.btn {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-main);
-    background: var(--bg-surface);
-    color: var(--t-primary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
+.card-actions-left {
+    display: flex;
     gap: 8px;
 }
 
+/* =============================================================================
+   Buttons
+   ============================================================================= */
+.btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    background: var(--bg-raised);
+    color: var(--t-primary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: border-color var(--t-fast), background-color var(--t-fast), color var(--t-fast);
+    user-select: none;
+    white-space: nowrap;
+}
+
 .btn:hover {
-    border-color: var(--t-secondary);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border-hi);
+    background: var(--bg-surface);
 }
 
-.light-theme .btn:hover {
-    background: rgba(0, 0, 0, 0.04);
+.btn:active {
+    transform: translateY(1px);
 }
 
+/* Secondary — default style, explicitly named */
+.btn-secondary {
+    color: var(--t-secondary);
+}
+
+.btn-secondary:hover {
+    color: var(--t-primary);
+}
+
+/* Primary — red fill */
 .btn-primary {
-    background-color: var(--accent-red);
-    color: white;
+    background: var(--accent-red);
     border-color: var(--accent-red);
-    box-shadow: 0 0 10px var(--glow-red);
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #ff5252;
+    background: #ff5252;
     border-color: #ff5252;
 }
 
+/* Danger — red ghost */
 .btn-danger {
-    background-color: rgba(255, 62, 62, 0.1);
+    background: rgba(255, 62, 62, 0.08);
     color: var(--accent-red);
-    border-color: rgba(255, 62, 62, 0.2);
+    border-color: rgba(255, 62, 62, 0.18);
 }
 
 .btn-danger:hover {
-    background-color: var(--accent-red);
-    color: white;
+    background: var(--accent-red);
+    color: #fff;
     border-color: var(--accent-red);
-    box-shadow: 0 0 10px var(--glow-red);
 }
 
+/* GUI toggle */
 .btn-gui-toggle {
-    background-color: var(--border-lo);
-    color: var(--t-secondary);
-    border-color: var(--border-main);
+    color: var(--t-muted);
+    font-size: 11px;
     padding: 6px 12px;
 }
 
 .btn-gui-toggle.visible {
-    background-color: rgba(59, 130, 246, 0.1);
+    background: rgba(59, 130, 246, 0.08);
     color: var(--accent-blue);
     border-color: rgba(59, 130, 246, 0.2);
 }
 
 .btn-gui-toggle:hover {
     color: var(--t-primary);
-    border-color: var(--t-secondary);
+    border-color: var(--border-hi);
 }
 
-/* Footer & Global Control */
+/* =============================================================================
+   Footer
+   ============================================================================= */
 .app-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
-    background: var(--bg-surface);
-    backdrop-filter: blur(16px);
-    border-top: 1px solid var(--border-main);
+    padding: 12px 24px;
+    background-color: var(--bg-overlay);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
 }
 
 .global-status {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     color: var(--t-secondary);
 }
 
 .footer-controls {
     display: flex;
-    gap: 12px;
+    gap: 10px;
+}
+
+/* =============================================================================
+   Reduced Motion — respect OS preference
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

@@ -192,7 +192,7 @@ fn App() -> impl IntoView {
                         {move || if is_dark.get() { "☀️ Light" } else { "🌙 Dark" }}
                     </button>
                     <button class="btn btn-secondary" on:click=start_all>"Start All"</button>
-                    <button class="btn btn-danger" on:click=stop_all style="border-color: rgba(255,62,62,0.2); color: var(--accent-red)">"Stop All"</button>
+                    <button class="btn btn-danger" on:click=stop_all>"Stop All"</button>
                 </div>
             </header>
 
@@ -247,7 +247,7 @@ fn App() -> impl IntoView {
                             </div>
 
                             <div class="card-actions">
-                                <div style="display: flex; gap: 8px;">
+                                <div class="card-actions-left">
                                     {if is_running {
                                         view! {
                                             <button class="btn btn-danger" on:click=move |_| stop_comp(name_for_stop.clone())>
@@ -292,7 +292,7 @@ fn App() -> impl IntoView {
                     <span>"Launcher service running as Administrator."</span>
                 </div>
                 <div class="footer-controls">
-                    <button class="btn btn-secondary" on:click=quit_launcher style="border-color: rgba(255,59,48,0.2); color: var(--accent-red)">
+                    <button class="btn btn-danger" on:click=quit_launcher>
                         "Exit & Stop All Services"
                     </button>
                 </div>
